@@ -1,0 +1,123 @@
+<!--
+Copyright 2016 Paulo Henrique Alves
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>br.com.fabricads</groupId>
+  <artifactId>addannotation-example</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>Example for Annotation Plugin</name>
+  <description>Example for Add and Remove annotation in classes at build time.</description>
+  <inceptionYear>2016</inceptionYear>
+
+  <properties>
+    <commons.io.version>2.4</commons.io.version>
+    <junit.version>4.12</junit.version>
+    <java.source.version>1.6</java.source.version>
+    <java.target.version>1.6</java.target.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>h3nrique</id>
+      <name>Paulo Henrique Alves</name>
+      <url>https://github.com/h3nrique</url>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons.io.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>add-annotation-build</id>
+      <activation>
+        <property>
+          <name>annotationPlugin</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>br.com.fabricads</groupId>
+            <artifactId>addannotation-maven-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <configuration>
+              <stringValue>example-value</stringValue>
+              <clazz>
+                <Package1Class2>Package1Class2</Package1Class2>
+                <Package2Class1>Package2Class1!com.example.Package2Class1</Package2Class1>
+              </clazz>
+            </configuration>
+            <executions>
+              <execution>
+                <id>before-generate-resources</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>before</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>after-generate-resources</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>after</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>${java.source.version}</source>
+          <target>${java.target.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
